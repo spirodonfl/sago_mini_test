@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build_css": "node-sass ./public/scss -o ./public/css",
-    "run_server": "pm2 start server.js",
+    "start_server": "pm2 start server.js",
     "check_server": "pm2 show server",
     "restart_server": "pm2 restart server",
     "view_server_logs": "pm2 logs server",
