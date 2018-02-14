@@ -72,6 +72,12 @@ angular.module('myApp', [])
             if ($scope.bundle_id === '') {
                 $scope.message.danger = 'Please enter a bundle name';
                 valid = false;
+            } else if ($scope.build_number === '') {
+                $scope.message.danger = 'Please enter a build number';
+                valid = false;
+            } else if (isNaN(Number($scope.build_number))) {
+                $scope.message.danger = 'Please enter a build number as an integer';
+                valid = false;
             }
 
             if (valid) {
