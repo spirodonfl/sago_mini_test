@@ -10,6 +10,14 @@ body, *, button, input {
   color: red;
   font-weight: bold; }
 
+.alert-information {
+  color: blue;
+  font-weight: bold; }
+
+.alert-success {
+  color: green;
+  font-weight: bold; }
+
 .content-wrapper {
   padding: 20px; }
   .content-wrapper .search-input, .content-wrapper .search-buttons {

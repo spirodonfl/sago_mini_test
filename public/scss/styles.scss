@@ -17,6 +17,14 @@ body, *, button, input {
     color: red;
     font-weight: bold;
 }
+.alert-information {
+    color: blue;
+    font-weight: bold;
+}
+.alert-success {
+    color: green;
+    font-weight: bold;
+}
 
 .content-wrapper {
     padding: $default-padding;

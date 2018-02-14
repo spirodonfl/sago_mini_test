@@ -34,8 +34,14 @@
                     <button name="run_set" ng-click="setBundle()">Set</button>
                 </div>
             </div>
-            <div ng-show="message" class="alert alert-danger">
-                {{message}}
+            <div ng-show="message.danger" class="alert alert-danger">
+                {{message.danger}}
+            </div>
+            <div ng-show="message.information" class="alert alert-information">
+                {{message.information}}
+            </div>
+            <div ng-show="message.success" class="alert alert-success">
+                {{message.success}}
             </div>
         </div>
 

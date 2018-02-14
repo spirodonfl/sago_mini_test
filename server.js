@@ -57,7 +57,7 @@ router.route('/set').post(function (req, res) {
                 res.json({ message: 'Bundle updated', data: bundleData});
             } else {
                 res.statusCode = 400;
-                res.json({ message: 'New build number must be greater than existing', data: bundleData });
+                res.json({ message: 'New build number must be greater than existing (' + bundleData.build_number + ')', data: bundleData });
             }
             break;
         }
