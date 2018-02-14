@@ -6,6 +6,12 @@ This gives you the ability to run "ng" commands in your shell.
 
 Make sure you've installed MongoDB from https://www.mongodb.com/download-center.
 
+## What I used / did && stuff that makes me cringe
+
+I went with es5 code just cause it was faster for me. With typescript (which I ended up not using) I could have targeted es6 (or just written plain es6).
+
+The nested callbacks are very cringeworthy but it's a quick and dirty way to prove the functionality is good. Can fix it.
+
 ## Managing the server
 
 The server manages both the API and also the public HTML served to manipulate data with the API. Use the commands below, pretty self-explanatory.
