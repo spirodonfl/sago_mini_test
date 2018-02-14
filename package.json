@@ -1,0 +1,28 @@
+{
+  "name": "sago_mini_test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build_css": "node-sass ./public/scss -o ./public/css",
+    "run_server": "pm2 start server.js",
+    "check_server": "pm2 show server",
+    "restart_server": "pm2 restart server",
+    "view_server_logs": "pm2 logs server",
+    "stop_server": "pm2 stop server"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "node-sass": "latest",
+    "typescript": "latest"
+  },
+  "dependencies": {
+    "pm2": "latest",
+    "express": "latest",
+    "mongodb": "latest",
+    "body-parser": "latest"
+  }
+}
