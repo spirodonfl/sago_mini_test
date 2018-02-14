@@ -15,13 +15,6 @@ app.use(bodyParser.json());
 
 var port = process.env.PORT || 9000;
 
-var ddI = 2;
-var defaultData = [
-    {id: 0, bundle_id: 'com.sagomini.HomeworkChallenge', build_number: 1},
-    {id: 1, bundle_id: 'com.sagomini.SpiroChallenge', build_number: 1},
-    {id: 2, bundle_id: 'test', build_number: 1}
-];
-
 var router = express.Router();
 router.use(function(req, res, next) {
     console.log('Activity log...');
@@ -65,33 +58,46 @@ router.route('/read').get(function (req, res) {
 router.route('/set').post(function (req, res) {
     var bundleId = req.body.bundle_id.toLowerCase();
     var newBuildNumber = parseInt(req.body.new_build_number);
-    var exists = false;
-    for (var i = 0; i < defaultData.length; ++i) {
-        if (defaultData[i].bundle_id.toLowerCase() === bundleId) {
-            var bundleData = defaultData[i];
-            exists = true;
-            if (newBuildNumber > bundleData.build_number) {
-                bundleData.build_number = newBuildNumber;
-                res.statusCode = 200;
-                res.json({ message: 'Bundle updated', data: bundleData});
+    mongoDb.find({ bundle_id: bundleId }).toArray(function (err, docs) {
+        if (err) {
+            mongoConnected.close();
+            res.statusCode = 500;
+            res.json({ message: 'Serious error [90]' });
+        } else {
+            if (docs.length === 1) {
+                var bundleData = docs[0];
+                if (newBuildNumber > bundleData.build_number) {
+                    mongoDb.findOneAndUpdate(
+                        { bundle_id: bundleId },
+                        { $set: { build_number: newBuildNumber }},
+                        { returnOriginal: false, upsert: true },
+                        function (err, queryResponse) {
+                            mongoConnected.close();
+                            if (err) {
+                                res.statusCode = 500;
+                                res.json({ message: 'Serious error [37]' });
+                            } else {
+                                console.log(queryResponse);
+                                res.statusCode = 200;
+                                if (queryResponse.lastErrorObject.updatedExisting) {
+                                    res.json({ message: 'Bundle updated', data: queryResponse.value });
+                                } else {
+                                    res.json({ message: 'Bundle created', data: queryResponse.value });
+                                }
+                            }
+                        });
+                } else {
+                    mongoConnected.close();
+                    res.statusCode = 400;
+                    res.json({ message: 'New build number must be greater than existing (' + bundleData.build_number + ')', data: bundleData });
+                }
             } else {
-                res.statusCode = 400;
-                res.json({ message: 'New build number must be greater than existing (' + bundleData.build_number + ')', data: bundleData });
+                mongoConnected.close();
+                res.statusCode = 500;
+                res.json({ message: 'Serious error [91]' });
             }
-            break;
         }
-    }
-    if (!exists) {
-        defaultData.push({
-            id: ddI,
-            bundle_id: bundleId,
-            build_number: 0
-        });
-        var data = defaultData[ddI];
-        ++ddI;
-        res.statusCode = 200;
-        res.json({ message: 'Bundle created', data: data });
-    }
+    });
 });
 router.route('/bump').post(function (req, res) {
     var bundleId = req.body.bundle_id.toLowerCase();
@@ -103,7 +109,7 @@ router.route('/bump').post(function (req, res) {
             mongoConnected.close();
             if (err) {
                 res.statusCode = 500;
-                res.json({ message: 'Serious error [48]' });
+                res.json({ message: 'Serious error [72]' });
             } else {
                 console.log(queryResponse);
                 res.statusCode = 200;
