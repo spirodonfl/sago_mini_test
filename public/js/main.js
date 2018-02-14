@@ -22,7 +22,7 @@ angular.module('myApp', [])
                 $http.get('/api/read?bundle_id=' + $scope.bundle_id)
                     .then(function (response) {
                         if (response.status === 200) {
-                            $scope.message.success = 'Bundle found! Build number is ' + response.data.data.build_number;
+                            $scope.message.success = 'Bundle found! Build number is ' + response.data.bundle.build_number;
                         } else {
                             $scope.message.danger = 'Unknown error';
                         }
@@ -49,9 +49,9 @@ angular.module('myApp', [])
                     .then(function (response) {
                         if (response.status === 200) {
                             if (response.data.message === 'Bundle created') {
-                                $scope.message.success = 'New bundle created and build number is set to ' + response.data.data.build_number;
+                                $scope.message.success = 'New bundle created and build number is set to ' + response.data.bundle.build_number;
                             } else {
-                                $scope.message.success = 'Bundle build number now set to ' + response.data.data.build_number;
+                                $scope.message.success = 'Bundle build number now set to ' + response.data.bundle.build_number;
                             }
                         } else {
                             $scope.message.danger = 'Unknown error';
@@ -85,9 +85,9 @@ angular.module('myApp', [])
                     .then(function (response) {
                         if (response.status === 200) {
                             if (response.data.message === 'Bundle created') {
-                                $scope.message.success = 'New bundle created and build number is set to ' + response.data.data.build_number;
+                                $scope.message.success = 'New bundle created and build number is set to ' + response.data.bundle.build_number;
                             } else {
-                                $scope.message.success = 'Bundle build number now set to ' + response.data.data.build_number;
+                                $scope.message.success = 'Bundle build number now set to ' + response.data.bundle.build_number;
                             }
                         } else {
                             $scope.message.danger = 'Unknown error';

@@ -8,9 +8,15 @@ Make sure you've installed MongoDB from https://www.mongodb.com/download-center.
 
 ## Managing the server
 
-The server manages both the API and also the public HTML served to manipulate data with the API
+The server manages both the API and also the public HTML served to manipulate data with the API. Use the commands below, pretty self-explanatory.
 
-"npm run-script start_server" etc...
+"npm run-script start_server"
+
+"npm run-script restart_server"
+
+"npm run-script stop_server"
+
+"npm run-script view_server_logs" -- This one is for viewing the console output while it's running
 
 ## Running MongoDB
 
@@ -20,11 +26,11 @@ For example, I run this: '"C:\Program Files\MongoDB\Server\3.6\bin\mongod.exe" -
 
 ## Building from SCSS to CSS
 
-/public/scss/styles.scss is the scss file that gets compiled into /public/css/styles.css when you run "npm run-script build_css" using node-sass to do it
+/public/scss/styles.scss is the scss file that gets compiled into /public/css/styles.css when you run "npm run-script build_css" using node-sass to do it. Make a change, build it, you're good to go.
 
 ## Using the bundle app
 
-You can set or bump or just search for a bundle
+The UI is very straightforward (I'm not a UI guy) and it should allow you to auto-create bundles if you're using BUMP or SET calls and then search for bundles to see if they exist or not.
 
 ## Typescript
 

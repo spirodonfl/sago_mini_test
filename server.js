@@ -80,16 +80,16 @@ router.route('/set').post(function (req, res) {
                                 console.log(queryResponse);
                                 res.statusCode = 200;
                                 if (queryResponse.lastErrorObject.updatedExisting) {
-                                    res.json({ message: 'Bundle updated', data: queryResponse.value });
+                                    res.json({ message: 'Bundle updated', bundle: queryResponse.value });
                                 } else {
-                                    res.json({ message: 'Bundle created', data: queryResponse.value });
+                                    res.json({ message: 'Bundle created', bundle: queryResponse.value });
                                 }
                             }
                         });
                 } else {
                     mongoConnected.close();
                     res.statusCode = 400;
-                    res.json({ message: 'New build number must be greater than existing (' + bundleData.build_number + ')', data: bundleData });
+                    res.json({ message: 'New build number must be greater than existing (' + bundleData.build_number + ')', bundle: bundleData });
                 }
             } else {
                 mongoConnected.close();
@@ -114,9 +114,9 @@ router.route('/bump').post(function (req, res) {
                 console.log(queryResponse);
                 res.statusCode = 200;
                 if (queryResponse.lastErrorObject.updatedExisting) {
-                    res.json({ message: 'Bundle updated', data: queryResponse.value });
+                    res.json({ message: 'Bundle updated', bundle: queryResponse.value });
                 } else {
-                    res.json({ message: 'Bundle created', data: queryResponse.value });
+                    res.json({ message: 'Bundle created', bundle: queryResponse.value });
                 }
             }
         });
