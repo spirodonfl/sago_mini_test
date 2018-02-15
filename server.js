@@ -9,14 +9,6 @@ var url             = require('url');
 var eventEmitter    = require('events');
 
 /**
- * Setup of constants (and initializations)
- */
-var mongoClient     = require('mongodb').MongoClient;
-var mongoConnection = 'mongodb://localhost:27017';
-var mongoDbName     = 'sago_mini_test';
-var mongoDb         = null;
-var mongoConnected  = null;
-/**
  * Simple Mongo class just so things are a bit more organized
  */
 var mongoClass = {
