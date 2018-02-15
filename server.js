@@ -49,6 +49,25 @@ var mongoClass = {
                 }
             }
         });
+    },
+    findBundleAndUpdate: function (bundleId, updateData, res) {
+        mongoClass.db.findOneAndUpdate(
+            { bundle_id: bundleId },
+            updateData,
+            { returnOriginal: false, upsert: true },
+            function (err, queryResponse) {
+                if (err) {
+                    res.statusCode = 500;
+                    res.json({ message: 'Serious error [37]' });
+                } else {
+                    res.statusCode = 200;
+                    if (queryResponse.lastErrorObject.updatedExisting) {
+                        res.json({ message: 'Bundle updated', bundle: queryResponse.value });
+                    } else {
+                        res.json({ message: 'Bundle created', bundle: queryResponse.value });
+                    }
+                }
+            });
     }
 }
 
@@ -91,6 +110,8 @@ router.route('/read').get(function (req, res) {
         res.statusCode = 400;
         res.statusCode = res.json({ message: 'You need a bundle id' });
     } else {
+        // Demonstrating how you *might* use emitters. Doesn't really work too well because you have to keep track of multiple clients and event listeners per client
+        // As an alternative, you could track clients, put event emitters on those clients, then make the mongoClass call those event emitters
         mongoClass.emitter.once('Query Error', function (error) {
             console.log('Query error', error);
             // I didn't think it was appropriate to show the client (ship to the client) the actual query errors
@@ -132,23 +153,7 @@ router.route('/set').post(function (req, res) {
                 if (docs.length === 1) {
                     var bundleData = docs[0];
                     if (newBuildNumber > bundleData.build_number) {
-                        mongoClass.db.findOneAndUpdate(
-                            { bundle_id: bundleId },
-                            { $set: { build_number: newBuildNumber }},
-                            { returnOriginal: false, upsert: true },
-                            function (err, queryResponse) {
-                                if (err) {
-                                    res.statusCode = 500;
-                                    res.json({ message: 'Serious error [37]' });
-                                } else {
-                                    res.statusCode = 200;
-                                    if (queryResponse.lastErrorObject.updatedExisting) {
-                                        res.json({ message: 'Bundle updated', bundle: queryResponse.value });
-                                    } else {
-                                        res.json({ message: 'Bundle created', bundle: queryResponse.value });
-                                    }
-                                }
-                            });
+                        mongoClass.findBundleAndUpdate(bundleId, { $set: { build_number: newBuildNumber }}, res);
                     } else {
                         res.statusCode = 400;
                         res.json({ message: 'New build number must be greater than existing (' + bundleData.build_number + ')', bundle: bundleData });
@@ -171,23 +176,7 @@ router.route('/bump').post(function (req, res) {
         res.statusCode = res.json({ message: 'You need a bundle id' });
     } else {
         var bundleId = req.body.bundle_id.toLowerCase();
-        mongoClass.db.findOneAndUpdate(
-            { bundle_id: bundleId },
-            { $inc: { build_number: +1 }},
-            { returnOriginal: false, upsert: true },
-            function (err, queryResponse) {
-                if (err) {
-                    res.statusCode = 500;
-                    res.json({ message: 'Serious error [72]' });
-                } else {
-                    res.statusCode = 200;
-                    if (queryResponse.lastErrorObject.updatedExisting) {
-                        res.json({ message: 'Bundle updated', bundle: queryResponse.value });
-                    } else {
-                        res.json({ message: 'Bundle created', bundle: queryResponse.value });
-                    }
-                }
-            });
+        mongoClass.findBundleAndUpdate(bundleId, { $inc: { build_number: +1 }}, res);
     }
 });
 app.use('/api', router);

@@ -8,8 +8,6 @@ Run "npm install" to install all the npm packages you need.
 
 I went with es5 code just cause it was faster for me. With typescript (which I ended up not using) I could have targeted es6 (or just written plain es6).
 
-The nested callbacks are very cringeworthy but it's a quick and dirty way to prove the functionality is good. Can fix it.
-
 ## Managing the server
 
 The server manages both the API and also the public HTML served to manipulate data with the API. Use the commands below, pretty self-explanatory.
