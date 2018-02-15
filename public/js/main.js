@@ -16,6 +16,9 @@ angular.module('myApp', [])
             if ($scope.bundle_id === '') {
                 $scope.message.danger = 'Please enter a bundle name';
                 valid = false;
+            } else if (!$scope.bundle_id.match(/\w+(?:\.\w+){2,}/)) {
+                $scope.message.danger = 'Please enter a valid bundle. Example: com.sagomini.HomeworkChallenge';
+                valid = false;
             }
 
             if (valid) {
@@ -43,6 +46,9 @@ angular.module('myApp', [])
             var valid = true;
             if ($scope.bundle_id === '') {
                 $scope.message.danger = 'Please enter a bundle name';
+                valid = false;
+            } else if (!$scope.bundle_id.match(/\w+(?:\.\w+){2,}/)) {
+                $scope.message.danger = 'Please enter a valid bundle. Example: com.sagomini.HomeworkChallenge';
                 valid = false;
             }
 
@@ -75,6 +81,9 @@ angular.module('myApp', [])
             var valid = true;
             if ($scope.bundle_id === '') {
                 $scope.message.danger = 'Please enter a bundle name';
+                valid = false;
+            } else if (!$scope.bundle_id.match(/\w+(?:\.\w+){2,}/)) {
+                $scope.message.danger = 'Please enter a valid bundle. Example: com.sagomini.HomeworkChallenge';
                 valid = false;
             } else if ($scope.build_number === '') {
                 $scope.message.danger = 'Please enter a build number';

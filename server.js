@@ -23,7 +23,7 @@ var mongoClass = {
             if (err) {
                 mongoClass.emitter.emit('Connection error');
             } else {
-                mongoClass.db = client.db(mongoDbName).collection('bundle_data');
+                mongoClass.db = client.db(mongoClass.dbName).collection('bundle_data');
                 mongoClass.connection = client;
                 mongoClass.emitter.emit('Connected');
             }
@@ -101,9 +101,14 @@ router.route('/read').get(function (req, res) {
     if (!query.bundle_id) {
         res.statusCode = 400;
         res.statusCode = res.json({ message: 'You need a bundle id' });
+    } else if (!query.bundle_id.match(/\w+(?:\.\w+){2,}/)) {
+        res.statusCode = 400;
+        res.statusCode = res.json({ message: 'Invalid bundle id string' });
     } else {
-        // Demonstrating how you *might* use emitters. Doesn't really work too well because you have to keep track of multiple clients and event listeners per client
+        // Demonstrating how you *might* use emitters.
+        // Doesn't really work too well because you have to keep track of multiple clients and event listeners per client
         // As an alternative, you could track clients, put event emitters on those clients, then make the mongoClass call those event emitters
+        // JUST FOR DEMONSTRATION PURPOSES (can cleanup)
         mongoClass.emitter.once('Query Error', function (error) {
             console.log('Query error', error);
             // I didn't think it was appropriate to show the client (ship to the client) the actual query errors
@@ -130,9 +135,15 @@ router.route('/set').post(function (req, res) {
     if (!req.body.bundle_id) {
         res.statusCode = 400;
         res.statusCode = res.json({ message: 'You need a bundle id' });
+    } else if (!req.body.bundle_id.match(/\w+(?:\.\w+){2,}/)) {
+        res.statusCode = 400;
+        res.statusCode = res.json({ message: 'Invalid bundle id string' });
     } else if (!req.body.new_build_number) {
         res.statusCode = 400;
         res.statusCode = res.json({ message: 'You need a build number' });
+    } else if (isNaN(Number(req.body.new_build_number))) {
+        res.statusCode = 400;
+        res.statusCode = res.json({ message: 'You need an integer as a build number' });
     } else {
         var bundleId = req.body.bundle_id.toLowerCase();
         var newBuildNumber = parseInt(req.body.new_build_number);
@@ -166,6 +177,9 @@ router.route('/bump').post(function (req, res) {
     if (!req.body.bundle_id) {
         res.statusCode = 400;
         res.statusCode = res.json({ message: 'You need a bundle id' });
+    } else if (!req.body.bundle_id.match(/\w+(?:\.\w+){2,}/)) {
+        res.statusCode = 400;
+        res.statusCode = res.json({ message: 'Invalid bundle id string' });
     } else {
         var bundleId = req.body.bundle_id.toLowerCase();
         mongoClass.findBundleAndUpdate(bundleId, { $inc: { build_number: +1 }}, res);
