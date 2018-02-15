@@ -30,6 +30,8 @@ angular.module('myApp', [])
                     .catch(function (response) {
                         if (response.status === 403) {
                             $scope.message.danger = 'Bundle not found!';
+                        } else if (response.status === 400) {
+                            $scope.message.danger = response.data.message;
                         } else {
                             $scope.message.danger = 'Unknown error';
                         }
@@ -60,6 +62,8 @@ angular.module('myApp', [])
                     .catch(function (response) {
                         if (response.status === 403) {
                             $scope.message.danger = 'Bundle not found!';
+                        } else if (response.status === 400) {
+                            $scope.message.danger = response.data.message;
                         } else {
                             $scope.message.danger = 'Unknown error';
                         }
